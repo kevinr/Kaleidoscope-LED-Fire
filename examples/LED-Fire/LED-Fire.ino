@@ -1,5 +1,5 @@
 /* -*- mode: c++ -*-
- * Kaleidoscope-LED-Wavepool
+ * Kaleidoscope-LED-Fire
  * Copyright (C) 2017 Selene Scriven
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  */
 
 #include <Kaleidoscope.h>
-#include <Kaleidoscope-LED-Wavepool.h>
+#include <Kaleidoscope-LED-Fire.h>
 #include "LED-Off.h"
 
 const Key keymaps[][ROWS][COLS] PROGMEM = {
@@ -41,12 +41,12 @@ const Key keymaps[][ROWS][COLS] PROGMEM = {
 };
 
 void setup() {
-  Kaleidoscope.use(&LEDOff, &WavepoolEffect);
+  Kaleidoscope.use(&LEDOff, &FireEffect);
 
   Kaleidoscope.setup();
 
-  WavepoolEffect.idle_timeout = 5000;  // 5 seconds
-  WavepoolEffect.activate();
+  FireEffect.idle_timeout = 5000;  // 5 seconds
+  FireEffect.activate();
 }
 
 void loop() {

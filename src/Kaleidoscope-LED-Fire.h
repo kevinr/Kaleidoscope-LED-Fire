@@ -1,5 +1,5 @@
 /* -*- mode: c++ -*-
- * Kaleidoscope-LED-Wavepool
+ * Kaleidoscope-LED-Fire
  * Copyright (C) 2017  Selene Scriven
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,4 +18,4 @@
 
 #pragma once
 
-#include <Kaleidoscope/LED-Wavepool.h>
+#include <Kaleidoscope/LED-Fire.h>

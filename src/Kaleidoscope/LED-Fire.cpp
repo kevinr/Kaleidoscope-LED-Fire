@@ -1,5 +1,5 @@
 /* -*- mode: c++ -*-
- * Kaleidoscope-LED-Wavepool
+ * Kaleidoscope-LED-Fire
  * Copyright (C) 2017 Selene Scriven
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Kaleidoscope-LED-Wavepool.h>
+#include <Kaleidoscope-LED-Fire.h>
 #include <LEDUtils.h>
 
 namespace kaleidoscope {
@@ -25,20 +25,20 @@ namespace kaleidoscope {
 #define MS_PER_FRAME 40  // 40 = 25 fps
 #define FRAMES_PER_DROP 120  // max time between raindrops during idle animation
 
-int8_t WavepoolEffect::surface[2][WP_WID*WP_HGT];
-uint8_t WavepoolEffect::page = 0;
-uint8_t WavepoolEffect::frames_since_event = 0;
-uint16_t WavepoolEffect::idle_timeout = 5000;  // 5 seconds
+int8_t FireEffect::surface[2][WP_WID*WP_HGT];
+uint8_t FireEffect::page = 0;
+uint8_t FireEffect::frames_since_event = 0;
+uint16_t FireEffect::idle_timeout = 5000;  // 5 seconds
 
 // map native keyboard coordinates (16x4) into geometric space (14x5)
-PROGMEM const uint8_t WavepoolEffect::rc2pos[ROWS*COLS] = {
+PROGMEM const uint8_t FireEffect::rc2pos[ROWS*COLS] = {
      0,  1,  2,  3,  4,  5,  6,    59, 66,    7,  8,  9, 10, 11, 12, 13,
     14, 15, 16, 17, 18, 19, 34,    60, 65,   35, 22, 23, 24, 25, 26, 27,
     28, 29, 30, 31, 32, 33, 48,    61, 64,   49, 36, 37, 38, 39, 40, 41,
     42, 43, 44, 45, 46, 47,     58,62, 63,67,    50, 51, 52, 53, 54, 55,
 };
 
-EventHandlerResult WavepoolEffect::onKeyswitchEvent(Key &mapped_key, byte row, byte col, uint8_t key_state) {
+EventHandlerResult FireEffect::onKeyswitchEvent(Key &mapped_key, byte row, byte col, uint8_t key_state) {
   if (row >= ROWS || col >= COLS)
     return EventHandlerResult::OK;
 
@@ -51,7 +51,7 @@ EventHandlerResult WavepoolEffect::onKeyswitchEvent(Key &mapped_key, byte row, b
   return EventHandlerResult::OK;
 }
 
-void WavepoolEffect::raindrop(uint8_t x, uint8_t y, int8_t *page) {
+void FireEffect::raindrop(uint8_t x, uint8_t y, int8_t *page) {
   uint8_t rainspot = (y*WP_WID) + x;
 
   page[rainspot] = 0x7f;
@@ -63,13 +63,13 @@ void WavepoolEffect::raindrop(uint8_t x, uint8_t y, int8_t *page) {
 
 // this is a lot smaller than the standard library's rand(),
 // and still looks random-ish
-uint8_t WavepoolEffect::wp_rand() {
+uint8_t FireEffect::wp_rand() {
     static uint16_t offset = 0x400;
     offset = ((offset + 1) & 0x4fff) | 0x400;
     return (millis()/MS_PER_FRAME) + pgm_read_byte(offset);
 }
 
-void WavepoolEffect::update(void) {
+void FireEffect::update(void) {
 
   // limit the frame rate; one frame every 64 ms
   static uint8_t prev_time = 0;
@@ -215,4 +215,4 @@ void WavepoolEffect::update(void) {
 
 }
 
-kaleidoscope::WavepoolEffect WavepoolEffect;
+kaleidoscope::FireEffect FireEffect;

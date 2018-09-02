@@ -1,15 +1,15 @@
-# Kaleidoscope-LED-Wavepool
+# Kaleidoscope-LED-Fire
 
 ![status][st:experimental] [![Build Status][travis:image]][travis:status]
 
- [travis:image]: https://travis-ci.org/keyboardio/Kaleidoscope-LED-Wavepool.svg?branch=master
- [travis:status]: https://travis-ci.org/keyboardio/Kaleidoscope-LED-Wavepool
+ [travis:image]: https://travis-ci.org/keyboardio/Kaleidoscope-LED-Fire.svg?branch=master
+ [travis:status]: https://travis-ci.org/keyboardio/Kaleidoscope-LED-Fire
 
  [st:stable]: https://img.shields.io/badge/stable-✔-black.svg?style=flat&colorA=44cc11&colorB=494e52
  [st:broken]: https://img.shields.io/badge/broken-X-black.svg?style=flat&colorA=e05d44&colorB=494e52
  [st:experimental]: https://img.shields.io/badge/experimental----black.svg?style=flat&colorA=dfb317&colorB=494e52
 
-The `WavepoolEffect` plugin makes waves of light splash out from each keypress.
+The `FireEffect` plugin makes waves of light splash out from each keypress.
 When idle, it will also simulate gentle rainfall on the keyboard.
 
 ## Using the plugin
@@ -18,15 +18,15 @@ To use the plugin, one needs to include the header and select the effect.
 
 ```c++
 #include <Kaleidoscope.h>
-#include <Kaleidoscope-LED-Wavepool.h>
+#include <Kaleidoscope-LED-Fire.h>
 
 void setup (){
-  Kaleidoscope.use(&WavepoolEffect);
+  Kaleidoscope.use(&FireEffect);
 
   Kaleidoscope.setup();
 
-  WavepoolEffect.idle_timeout = 5000;  // 5 seconds
-  WavepoolEffect.activate();
+  FireEffect.idle_timeout = 5000;  // 5 seconds
+  FireEffect.activate();
 }
 ```
 
@@ -35,7 +35,7 @@ as early as possible, so the plugin can catch all relevant key presses.
 
 ## Plugin methods
 
-The plugin provides the `WavepoolEffect` object, which has the following
+The plugin provides the `FireEffect` object, which has the following
 properties:
 
 ### `.idle_timeout`
@@ -56,4 +56,4 @@ properties:
 Starting from the [example][plugin:example] is the recommended way of getting
 started with the plugin.
 
- [plugin:example]: https://github.com/ToyKeeper/Kaleidoscope-LED-Wavepool/blob/master/examples/LED-Wavepool/LED-Wavepool.ino
+ [plugin:example]: https://github.com/ToyKeeper/Kaleidoscope-LED-Fire/blob/master/examples/LED-Fire/LED-Fire.ino

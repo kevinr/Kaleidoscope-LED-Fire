@@ -1,5 +1,5 @@
 /* -*- mode: c++ -*-
- * Kaleidoscope-LED-Wavepool
+ * Kaleidoscope-LED-Fire
  * Copyright (C) 2017 Selene Scriven
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,9 +25,9 @@
 #define WP_HGT 5
 
 namespace kaleidoscope {
-class WavepoolEffect : public LEDMode {
+class FireEffect : public LEDMode {
  public:
-  WavepoolEffect(void) {};
+  FireEffect(void) {};
 
   EventHandlerResult onKeyswitchEvent(Key &mapped_key, byte row, byte col, uint8_t key_state);
 
@@ -49,4 +49,4 @@ class WavepoolEffect : public LEDMode {
 
 }
 
-extern kaleidoscope::WavepoolEffect WavepoolEffect;
+extern kaleidoscope::FireEffect FireEffect;
