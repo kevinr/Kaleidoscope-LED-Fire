@@ -88,7 +88,7 @@ void FireEffect::update(void) {
 
   frames_since_event ++;
 
-  // needs two pages of height map to do the calculations
+  // needs two pages of temp map to do the calculations
   int8_t *newpg = &surface[page^1][0];
   int8_t *oldpg = &surface[page][0];
 
@@ -181,23 +181,23 @@ void FireEffect::update(void) {
   for (byte r = 0; r < ROWS; r++) {
     for (byte c = 0; c < COLS; c++) {
       uint8_t offset = (r*COLS) + c;
-      int8_t height = oldpg[pgm_read_byte(rc2pos+offset)];
+      int8_t temp = oldpg[pgm_read_byte(rc2pos+offset)];
       #ifdef INTERPOLATE
       if (now & 1) {  // odd frames only
-          // average height with other frame
-          height = ((int16_t)height + newpg[pgm_read_byte(rc2pos+offset)]) >> 1;
+          // average temp with other frame
+          temp = ((int16_t)temp + newpg[pgm_read_byte(rc2pos+offset)]) >> 1;
       }
       #endif
 
-      uint8_t intensity = abs(height) * 2;
+      uint8_t intensity = abs(temp) * 2;
 
       // color starts white but gets dimmer and more saturated as it fades,
-      // with hue wobbling according to height map
-      int16_t hue = (current_hue + height + (height>>1)) & 0xff;
+      // with hue wobbling according to temp map
+      int16_t hue = (abs(temp) / 3) & 0xff;
 
       cRGB color = hsvToRgb(hue,
-                            0xff - intensity,
-                            ((uint16_t)intensity)*2);
+                            0xff,
+                            0xff);
 
       ::LEDControl.setCrgbAt(r, c, color);
     }
