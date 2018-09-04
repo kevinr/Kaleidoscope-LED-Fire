@@ -43,8 +43,8 @@ started with the plugin.
 
 ## Acknowledgments
 
-The `FireEffect` plugin is based on [Selene Scriven][https://github.com/ToyKeeper/]'s 
-excellent [`WavePoolEffect` plugin][https://github.com/ToyKeeper/Kaleidoscope-LED-Wavepool/],
+The `FireEffect` plugin is based on [Selene Scriven](https://github.com/ToyKeeper/)'s 
+excellent [`WavePoolEffect` plugin](https://github.com/ToyKeeper/Kaleidoscope-LED-Wavepool/),
 without which I likely would never have succeeded.
 
 It implements a simplified version of the [classic demoscene fire effect as documented by Lode][fire].
