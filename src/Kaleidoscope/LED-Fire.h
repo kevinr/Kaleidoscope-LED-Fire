@@ -39,7 +39,7 @@ class FireEffect : public LEDMode {
 
  private:
   static uint8_t frames_since_event;
-  static int8_t surface[2][WP_WID*WP_HGT];
+  static uint8_t surface[2][WP_WID*WP_HGT];
   static uint8_t page;
   static PROGMEM const uint8_t rc2pos[ROWS*COLS];
 

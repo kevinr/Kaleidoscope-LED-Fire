@@ -25,7 +25,7 @@ namespace kaleidoscope {
 #define MS_PER_FRAME 40  // 40 = 25 fps
 #define FRAMES_PER_DROP 120  // max time between raindrops during idle animation
 
-int8_t FireEffect::surface[2][WP_WID*WP_HGT];
+uint8_t FireEffect::surface[2][WP_WID*WP_HGT];
 uint8_t FireEffect::page = 0;
 uint8_t FireEffect::frames_since_event = 0;
 uint16_t FireEffect::idle_timeout = 5000;  // 5 seconds
@@ -44,13 +44,14 @@ EventHandlerResult FireEffect::onKeyswitchEvent(Key &mapped_key, byte row, byte 
 
   if (keyIsPressed(key_state)) {
     uint8_t offset = (row*COLS)+col;
-    surface[page][pgm_read_byte(rc2pos + offset)] = 0x7f;
+    surface[page][pgm_read_byte(rc2pos + offset)] = 0xff;
     frames_since_event = 0;
   }
 
   return EventHandlerResult::OK;
 }
 
+/* // disable raindrops
 void FireEffect::raindrop(uint8_t x, uint8_t y, int8_t *page) {
   uint8_t rainspot = (y*WP_WID) + x;
 
@@ -60,6 +61,7 @@ void FireEffect::raindrop(uint8_t x, uint8_t y, int8_t *page) {
   if (x > 0) page[rainspot-1] = 0x60;
   if (x < (WP_WID-1)) page[rainspot+1] = 0x60;
 }
+*/
 
 // this is a lot smaller than the standard library's rand(),
 // and still looks random-ish
@@ -80,18 +82,13 @@ void FireEffect::update(void) {
       return;
   }
 
-  // rotate the colors over time
-  // (side note: it's weird that this is a 16-bit int instead of 8-bit,
-  //  but that's what the library function wants)
-  static uint8_t current_hue = 0;
-  current_hue ++;
-
   frames_since_event ++;
 
   // needs two pages of temp map to do the calculations
-  int8_t *newpg = &surface[page^1][0];
-  int8_t *oldpg = &surface[page][0];
+  uint8_t *newpg = surface[page^1];
+  uint8_t *oldpg = surface[page];
 
+  /* // disable raindrops
   // rain a bit while idle
   static uint8_t frames_till_next_drop = 0;
   static int8_t prev_x = -1;
@@ -123,46 +120,16 @@ void FireEffect::update(void) {
         prev_y = y;
     }
   }
+  */
 
-  // calculate water movement
-  // (originally skipped edges, but this keyboard is too small for that)
-  //for (uint8_t y = 1; y < WP_HGT-1; y++) {
-  //  for (uint8_t x = 1; x < WP_WID-1; x++) {
+  // render fire
   #ifdef INTERPOLATE
   if (!(now & 1)) {  // even frames only
   #endif
   for (uint8_t y = 0; y < WP_HGT; y++) {
     for (uint8_t x = 0; x < WP_WID; x++) {
-      uint8_t offset = (y*WP_WID) + x;
 
-      int16_t value;
-      int8_t offsets[] = { -WP_WID,    WP_WID,
-                                  -1,         1,
-                           -WP_WID-1, -WP_WID+1,
-                            WP_WID-1,  WP_WID+1
-                         };
-      // don't wrap around edges or go out of bounds
-      if (y==0) {
-          offsets[0] = 0;
-          offsets[4] += WP_WID;
-          offsets[5] += WP_WID;
-          }
-      else if (y==WP_HGT-1) {
-          offsets[1] = 0;
-          offsets[6] -= WP_WID;
-          offsets[7] -= WP_WID;
-          }
-      if (x==0) {
-          offsets[2] = 0;
-          offsets[4] += 1;
-          offsets[6] += 1;
-          }
-      else if (x==WP_WID-1) {
-          offsets[3] = 0;
-          offsets[5] -= 1;
-          offsets[7] -= 1;
-          }
-
+      /*
       // add up all samples, divide, subtract prev frame's center
       int8_t *p;
       for(p=offsets, value=0; p<offsets+8; p++)
@@ -171,17 +138,32 @@ void FireEffect::update(void) {
 
       // reduce intensity gradually over time
       newpg[offset] = value - (value >> 3);
+      */
+
+      // for all but the bottom row, push the fire up
+      if (y < WP_HGT - 1) {
+          // on even rows, divide by two
+          if (y % 2 == 0) {
+              newpg[(y * WP_WID) + x] = oldpg[((y + 1) * WP_WID) + x] / 2;
+          } else {
+              newpg[(y * WP_WID) + x] = oldpg[((y + 1) * WP_WID) + x];
+          }
+      }
+      // for the bottom row, generate new sparks
+      else {
+        newpg[(y * WP_WID) + x] = wp_rand();
+      }
     }
   }
   #ifdef INTERPOLATE
   }
   #endif
 
-  // draw the water on the keys
+  // draw the buffer on the keys
   for (byte r = 0; r < ROWS; r++) {
     for (byte c = 0; c < COLS; c++) {
       uint8_t offset = (r*COLS) + c;
-      int8_t temp = oldpg[pgm_read_byte(rc2pos+offset)];
+      uint8_t temp = oldpg[pgm_read_byte(rc2pos+offset)];
       #ifdef INTERPOLATE
       if (now & 1) {  // odd frames only
           // average temp with other frame
@@ -189,15 +171,17 @@ void FireEffect::update(void) {
       }
       #endif
 
-      uint8_t intensity = abs(temp) * 2;
+      // clamp hue between red and yellow, with yellow = hotter
+      int16_t hue = (abs(temp) / 6) & 0xff;
 
-      // color starts white but gets dimmer and more saturated as it fades,
-      // with hue wobbling according to temp map
-      int16_t hue = (abs(temp) / 3) & 0xff;
+      uint8_t intensity = 0xff;
+      if (temp <= 0x7f) {
+          intensity = temp * 2;
+      }
 
       cRGB color = hsvToRgb(hue,
                             0xff,
-                            0xff);
+                            ((uint16_t)intensity) & 0xff);
 
       ::LEDControl.setCrgbAt(r, c, color);
     }
