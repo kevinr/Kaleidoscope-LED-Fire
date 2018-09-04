@@ -46,7 +46,6 @@ void setup() {
 
   Kaleidoscope.setup();
 
-  FireEffect.idle_timeout = 5000;  // 5 seconds
   FireEffect.activate();
 }
 

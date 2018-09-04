@@ -1,16 +1,7 @@
 # Kaleidoscope-LED-Fire
 
-![status][st:experimental] [![Build Status][travis:image]][travis:status]
-
- [travis:image]: https://travis-ci.org/keyboardio/Kaleidoscope-LED-Fire.svg?branch=master
- [travis:status]: https://travis-ci.org/keyboardio/Kaleidoscope-LED-Fire
-
- [st:stable]: https://img.shields.io/badge/stable-✔-black.svg?style=flat&colorA=44cc11&colorB=494e52
- [st:broken]: https://img.shields.io/badge/broken-X-black.svg?style=flat&colorA=e05d44&colorB=494e52
- [st:experimental]: https://img.shields.io/badge/experimental----black.svg?style=flat&colorA=dfb317&colorB=494e52
-
-The `FireEffect` plugin makes waves of light splash out from each keypress.
-When idle, it will also simulate gentle rainfall on the keyboard.
+The `FireEffect` plugin makes flames that roar from the bottom of your keyboard
+and every keypress.
 
 ## Using the plugin
 
@@ -25,27 +16,12 @@ void setup (){
 
   Kaleidoscope.setup();
 
-  FireEffect.idle_timeout = 5000;  // 5 seconds
   FireEffect.activate();
 }
 ```
 
 It is recommended to place the activation of the plugin (the `USE_PLUGINS` call)
 as early as possible, so the plugin can catch all relevant key presses.
-
-## Plugin methods
-
-The plugin provides the `FireEffect` object, which has the following
-properties:
-
-### `.idle_timeout`
-
-> When to keys are being pressed, light will periodically splash across
-> the keyboard.  This value sets the delay in ms before that starts.
->
-> To disable the idle animation entirely, set this to 0.
->
-> Default is 5000 (5 seconds).
 
 ## Dependencies
 
@@ -56,4 +32,21 @@ properties:
 Starting from the [example][plugin:example] is the recommended way of getting
 started with the plugin.
 
- [plugin:example]: https://github.com/ToyKeeper/Kaleidoscope-LED-Fire/blob/master/examples/LED-Fire/LED-Fire.ino
+ [plugin:example]: https://github.com/kevinr/Kaleidoscope-LED-Fire/blob/master/examples/LED-Fire/LED-Fire.ino
+
+## Acknowledgments
+
+The `FireEffect` plugin is based on [Selene Scriven][https://github.com/ToyKeeper/]'s 
+excellent [`WavePoolEffect` plugin][https://github.com/ToyKeeper/Kaleidoscope-LED-Wavepool/],
+without which I likely would never have succeeded.
+
+It implements a simplified version of the [classic demoscene fire effect as documented by Lode][fire].
+
+[fire]: https://lodev.org/cgtutor/fire.html
+
+Oldsters like me may recall Javier "Jare" Arévalo's classic [firedemo][firedemo] from 1993 (which he recently [ported to HTML5][firedemo-html5]).  Hans Wennborg has written a [nice walkthrough of it][firedemo-walkthrough].
+
+[firedemo]: http://www.iguanademos.com/Jare/wp/?p=2756
+[firedemo-html5]: http://www.iguanademos.com/Jare/files/Fire/
+[firedemo-walkthrough]: https://www.hanshq.net/fire.html
+
