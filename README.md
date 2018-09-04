@@ -3,6 +3,13 @@
 The `FireEffect` plugin makes flames that roar from the bottom of your keyboard
 and every keypress.
 
+![Keyboardio Model 01 running the FireEffect plugin][video]
+
+![Keyboardio Model 01 running the FireEffect plugin with a key depressed][video-keypress]
+
+[video]: examples/fire-effect.gif
+[video-keypress]: examples/fire-effect-keypress.gif
+
 ## Using the plugin
 
 To use the plugin, one needs to include the header and select the effect.
@@ -32,7 +39,7 @@ as early as possible, so the plugin can catch all relevant key presses.
 Starting from the [example][plugin:example] is the recommended way of getting
 started with the plugin.
 
- [plugin:example]: https://github.com/kevinr/Kaleidoscope-LED-Fire/blob/master/examples/LED-Fire/LED-Fire.ino
+ [plugin:example]: examples/LED-Fire/LED-Fire.ino
 
 ## Acknowledgments
 
