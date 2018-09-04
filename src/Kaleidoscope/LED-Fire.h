@@ -1,5 +1,6 @@
 /* -*- mode: c++ -*-
  * Kaleidoscope-LED-Fire
+ * Copyright (C) 2018 Kevin Riggle
  * Copyright (C) 2017 Selene Scriven
  *
  * This program is free software: you can redistribute it and/or modify

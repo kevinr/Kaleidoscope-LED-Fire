@@ -1,5 +1,6 @@
 /* -*- mode: c++ -*-
  * Kaleidoscope-LED-Fire
+ * Copyright (C) 2018 Kevin Riggle
  * Copyright (C) 2017 Selene Scriven
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,18 +52,6 @@ EventHandlerResult FireEffect::onKeyswitchEvent(Key &mapped_key, byte row, byte 
   return EventHandlerResult::OK;
 }
 
-/* // disable raindrops
-void FireEffect::raindrop(uint8_t x, uint8_t y, int8_t *page) {
-  uint8_t rainspot = (y*WP_WID) + x;
-
-  page[rainspot] = 0x7f;
-  if (y > 0) page[rainspot-WP_WID] = 0x60;
-  if (y < (WP_HGT-1)) page[rainspot+WP_WID] = 0x60;
-  if (x > 0) page[rainspot-1] = 0x60;
-  if (x < (WP_WID-1)) page[rainspot+1] = 0x60;
-}
-*/
-
 // this is a lot smaller than the standard library's rand(),
 // and still looks random-ish
 uint8_t FireEffect::wp_rand() {
@@ -88,57 +77,12 @@ void FireEffect::update(void) {
   uint8_t *newpg = surface[page^1];
   uint8_t *oldpg = surface[page];
 
-  /* // disable raindrops
-  // rain a bit while idle
-  static uint8_t frames_till_next_drop = 0;
-  static int8_t prev_x = -1;
-  static int8_t prev_y = -1;
-  #ifdef INTERPOLATE
-  // even frames: water movement and page flipping
-  // odd frames: raindrops and tweening
-  // (this arrangement seems to look best overall)
-  if (((now & 1)) && (idle_timeout > 0)) {
-  #else
-  if (idle_timeout > 0) {
-  #endif
-    // repeat previous raindrop to give it a slightly better effect
-    if (prev_x >= 0) {
-      raindrop(prev_x, prev_y, oldpg);
-      prev_x = prev_y = -1;
-    }
-    if (frames_since_event
-            >= (frames_till_next_drop
-                + (idle_timeout / MS_PER_FRAME))) {
-        frames_till_next_drop = 4 + (wp_rand() % FRAMES_PER_DROP);
-        frames_since_event = idle_timeout / MS_PER_FRAME;
-
-        uint8_t x = wp_rand() % WP_WID;
-        uint8_t y = wp_rand() % WP_HGT;
-        raindrop(x, y, oldpg);
-
-        prev_x = x;
-        prev_y = y;
-    }
-  }
-  */
-
   // render fire
   #ifdef INTERPOLATE
   if (!(now & 1)) {  // even frames only
   #endif
   for (uint8_t y = 0; y < WP_HGT; y++) {
     for (uint8_t x = 0; x < WP_WID; x++) {
-
-      /*
-      // add up all samples, divide, subtract prev frame's center
-      int8_t *p;
-      for(p=offsets, value=0; p<offsets+8; p++)
-          value += oldpg[offset + (*p)];
-      value = (value >> 2) - newpg[offset];
-
-      // reduce intensity gradually over time
-      newpg[offset] = value - (value >> 3);
-      */
 
       // for all but the bottom row, push the fire up
       if (y < WP_HGT - 1) {
