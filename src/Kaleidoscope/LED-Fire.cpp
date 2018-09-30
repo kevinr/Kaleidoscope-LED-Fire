@@ -57,14 +57,14 @@ EventHandlerResult FireEffect::onKeyswitchEvent(Key &mapped_key, byte row, byte 
 uint8_t FireEffect::wp_rand() {
     static uint16_t offset = 0x400;
     offset = ((offset + 1) & 0x4fff) | 0x400;
-    return (millis()/MS_PER_FRAME) + pgm_read_byte(offset);
+    return (Kaleidoscope.millisAtCycleStart()/MS_PER_FRAME) + pgm_read_byte(offset);
 }
 
 void FireEffect::update(void) {
 
   // limit the frame rate; one frame every 64 ms
   static uint8_t prev_time = 0;
-  uint8_t now = millis() / MS_PER_FRAME;
+  uint8_t now = Kaleidoscope.millisAtCycleStart() / MS_PER_FRAME;
   if (now != prev_time) {
       prev_time = now;
   } else {
