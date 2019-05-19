@@ -16,19 +16,25 @@ To use the plugin, one needs to include the header and select the effect.
 
 ```c++
 #include <Kaleidoscope.h>
+#include <Kaleidoscope-LEDControl.h>
 #include <Kaleidoscope-LED-Fire.h>
 
-void setup (){
-  Kaleidoscope.use(&FireEffect);
+KALEIDOSCOPE_INIT_PLUGINS(
+  LEDControl,
+  LEDOff,
+  FireEffect
+);
 
+void setup () {
   Kaleidoscope.setup();
 
   FireEffect.activate();
 }
-```
 
-It is recommended to place the activation of the plugin (the `USE_PLUGINS` call)
-as early as possible, so the plugin can catch all relevant key presses.
+void loop() {
+  Kaleidoscope.loop();
+}
+```
 
 ## Dependencies
 
