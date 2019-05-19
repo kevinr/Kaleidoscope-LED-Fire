@@ -25,6 +25,7 @@ namespace kaleidoscope {
 #define INTERPOLATE 1 // smoother, slower animation
 #define MS_PER_FRAME 40  // 40 = 25 fps
 #define FRAMES_PER_DROP 120  // max time between raindrops during idle animation
+#define HIGHLIGHT_WASD 1
 
 uint8_t FireEffect::surface[2][WP_WID*WP_HGT];
 uint8_t FireEffect::page = 0;
@@ -107,11 +108,18 @@ void FireEffect::update(void) {
   for (byte r = 0; r < ROWS; r++) {
     for (byte c = 0; c < COLS; c++) {
       uint8_t offset = (r*COLS) + c;
-      uint8_t temp = oldpg[pgm_read_byte(rc2pos+offset)];
+      uint8_t key = pgm_read_byte(rc2pos+offset);
+      uint8_t temp = oldpg[key];
       #ifdef INTERPOLATE
       if (now & 1) {  // odd frames only
           // average temp with other frame
           temp = ((int16_t)temp + newpg[pgm_read_byte(rc2pos+offset)]) >> 1;
+      }
+      #endif
+
+      #ifdef HIGHLIGHT_WASD
+      if (key == 16 || key == 29 || key == 30 || key == 31) { // WASD keys
+        temp = 0x60 | temp;
       }
       #endif
 
