@@ -25,7 +25,7 @@
 #define WP_WID 14
 #define WP_HGT 5
 
-namespace kaleidoscope {
+namespace kaleidoscope { namespace plugin {
 class FireEffect : public LEDMode {
  public:
   FireEffect(void) {};
@@ -48,6 +48,6 @@ class FireEffect : public LEDMode {
   static uint8_t wp_rand();
 };
 
-}
+} }
 
-extern kaleidoscope::FireEffect FireEffect;
+extern kaleidoscope::plugin::FireEffect FireEffect;

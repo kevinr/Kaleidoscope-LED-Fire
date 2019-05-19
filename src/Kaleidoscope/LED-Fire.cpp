@@ -18,9 +18,8 @@
  */
 
 #include <Kaleidoscope-LED-Fire.h>
-#include <LEDUtils.h>
 
-namespace kaleidoscope {
+namespace kaleidoscope { namespace plugin {
 
 #define INTERPOLATE 1 // smoother, slower animation
 #define MS_PER_FRAME 40  // 40 = 25 fps
@@ -149,6 +148,6 @@ void FireEffect::update(void) {
 
 }
 
-}
+} }
 
-kaleidoscope::FireEffect FireEffect;
+kaleidoscope::plugin::FireEffect FireEffect;
