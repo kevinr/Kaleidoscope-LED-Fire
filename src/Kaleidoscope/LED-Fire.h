@@ -29,7 +29,17 @@ namespace kaleidoscope { namespace plugin {
 class FireEffect : public LEDMode {
  public:
   FireEffect(void) {};
-
+  
+  EventHandlerResult onSetup() {
+     
+      // This dummy call protects the hsvToRgb function from being 
+      // garbage collected under certain circumstances.
+      //
+      hsvToRgb(0, 0, 0);
+      
+      return EventHandlerResult::OK;
+  }
+  
   EventHandlerResult onKeyswitchEvent(Key &mapped_key, byte row, byte col, uint8_t key_state);
 
   // ms before idle animation starts after last keypress
