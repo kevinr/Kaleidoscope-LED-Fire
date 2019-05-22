@@ -24,12 +24,11 @@ namespace kaleidoscope { namespace plugin {
 #define INTERPOLATE 1 // smoother, slower animation
 #define MS_PER_FRAME 40  // 40 = 25 fps
 #define FRAMES_PER_DROP 120  // max time between raindrops during idle animation
-#define HIGHLIGHT_WASD 1
 
 uint8_t FireEffect::surface[2][WP_WID*WP_HGT];
 uint8_t FireEffect::page = 0;
 uint8_t FireEffect::frames_since_event = 0;
-uint16_t FireEffect::idle_timeout = 5000;  // 5 seconds
+bool FireEffect::highlight_wasd = false;
 
 // map native keyboard coordinates (16x4) into geometric space (14x5)
 PROGMEM const uint8_t FireEffect::rc2pos[ROWS*COLS] = {
@@ -116,11 +115,11 @@ void FireEffect::update(void) {
       }
       #endif
 
-      #ifdef HIGHLIGHT_WASD
-      if (key == 16 || key == 29 || key == 30 || key == 31) { // WASD keys
-        temp = 0x60 | temp;
+      if (highlight_wasd) {
+          if (key == 16 || key == 29 || key == 30 || key == 31) { // WASD keys
+            temp = 0x60 | temp;
+          }
       }
-      #endif
 
       // clamp hue between red and yellow, with yellow = hotter
       int16_t hue = (abs(temp) / 6) & 0xff;

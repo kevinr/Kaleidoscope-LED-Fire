@@ -32,8 +32,8 @@ class FireEffect : public LEDMode {
 
   EventHandlerResult onKeyswitchEvent(Key &mapped_key, byte row, byte col, uint8_t key_state);
 
-  // ms before idle animation starts after last keypress
-  static uint16_t idle_timeout;
+  // make the WASD keys (in standard QWERTY layout) brighter
+  static bool highlight_wasd;
 
  protected:
   void update(void) final;
