@@ -41,6 +41,8 @@ void loop() {
 
 The plugin provides one configuration field, `highlight_wasd` (default: `false`), which makes the WASD keys of the standard QWERTY layout brighter, even when the fire effect is almost completely dimmed. Like so:
 
+![Keyboardio Model 01 running the FireEffect plugin with WASD keys highlighted][highlight-wasd]
+
 [highlight-wasd]: examples/fire-effect-highlight-wasd.jpg
 
 The backstory is that, unlike a lot of Keyboardio users, it seems, I mostly use my Model 01 for gaming, and I mostly game at night with the room lights down.  Glancing down in the middle of a madcap Overwatch match to reset my fingers, at the exact moment the LEDs were almost entirely out, was no fun. Hence, this configuration option.
